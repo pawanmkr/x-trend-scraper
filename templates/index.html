@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Run Selenium Script</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+        .result {
+            margin-top: 20px;
+            display: none;
+        }
+        .loading {
+            font-weight: bold;
+            color: blue;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Click the button to run the Selenium script and get trending topics</h1>
+    <button onclick="runScript()">Click here to run the script</button>
+
+    <div id="loading-message" class="loading" style="display: none;">
+        Loading... Please wait while we fetch the data.
+    </div>
+
+    <div class="result">
+        <h2>These are the most happening topics as on <span id="timestamp"></span></h2>
+        <ul id="trending-list"></ul>
+        <p id="ip-address"></p>
+
+        <h3>Here's a JSON extract of this record from the MongoDB:</h3>
+        <pre id="json-record"></pre>
+        <button onclick="runScript()">Click here to run the query again</button>
+    </div>
+
+    <script>
+        function runScript() {
+            // Show the loading message and hide the button
+            document.getElementById('loading-message').style.display = 'block';
+            document.querySelector('button').style.display = 'none';
+
+            fetch('/run_script')
+                .then(response => response.json())
+                .then(data => {
+                    // Hide the loading message
+                    document.getElementById('loading-message').style.display = 'none';
+
+                    // Show the result
+                    document.getElementById('timestamp').textContent = data.timestamp;
+                    document.getElementById('ip-address').textContent = `The IP address used for this query was ${data.ip_address}.`;
+
+                    let trendingList = document.getElementById('trending-list');
+                    trendingList.innerHTML = "";
+                    data.trending_tags.forEach((tag, index) => {
+                        let li = document.createElement('li');
+                        li.textContent = `Name of trend${index + 1}: ${tag}`;
+                        trendingList.appendChild(li);
+                    });
+
+                    // Display the MongoDB JSON
+                    let jsonRecord = document.getElementById('json-record');
+                    jsonRecord.textContent = JSON.stringify(data, null, 4);
+
+                    // Show the result div
+                    document.querySelector('.result').style.display = 'block';
+
+                    // Show the button again for a new query
+                    document.querySelector('button').style.display = 'block';
+                    document.querySelector('button').textContent = "Click here to run the query again";  // Change the button text
+                })
+                .catch(error => {
+                    // Hide loading message and show error if there's a problem
+                    document.getElementById('loading-message').style.display = 'none';
+                    alert('An error occurred: ' + error);
+                });
+        }
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,62 @@
+# Python
+*.pyc
+*.pyo
+*.pyd
+__pycache__/
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+*.egg-info/
+*.eggs/
+dist/
+build/
+*.log
+
+# FastAPI / Uvicorn
+*.db
+*.sqlite3
+*.sqlite
+
+# IDEs and Editors
+.vscode/
+.idea/
+*.iml
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# mypy
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# Coverage reports
+.coverage
+.coverage.*
+*.hypothesis/
+
+# Pytest
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.hypothesis/
+*.tox/
+
+# Pipenv
+Pipfile.lock
+
+# poetry
+*.toml
+
+# VS Code settings
+.vscode/
+
+# others
+chromedriver
